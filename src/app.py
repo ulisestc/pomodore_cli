@@ -30,23 +30,38 @@ def main():
         options = ["Focus time", "Short rest time", "Long rest time", "Number of rounds"]
         
         while True:
-            option_to_modify = int(input(f"""
-                                        What timer do you want to modify?
-                                        1. Focus time ({config["POMODORE_TIME"]} mins)
-                                        2. Short rest ({config["SHORT_REST_TIME"]} mins)
-                                        3. Long Rest ({config["LONG_REST_TIME"]} mins)
-                                        4. Number of rounds ({config["NUMBER_OF_ROUNDS"]})
-                                        5. Exit
-                                    """))
+            #bucle infinito hasta que se ingrese un int
+            while True:
+                try:
+                    option_to_modify = int(input(f"""
+                                                What timer do you want to modify?
+                                                1. Focus time ({config["POMODORE_TIME"]} mins)
+                                                2. Short rest ({config["SHORT_REST_TIME"]} mins)
+                                                3. Long Rest ({config["LONG_REST_TIME"]} mins)
+                                                4. Number of rounds ({config["NUMBER_OF_ROUNDS"]})
+                                                5. Exit
+                                            """))
+                    break
+                except ValueError:
+                    clear_terminal()
+                    print("Please enter only a valid number")
+            
             if option_to_modify > 5 or option_to_modify < 1:
                 clear_terminal()
         
             if option_to_modify == 5:
                 # exit = True
                 break
-
-            ans = int(input(f"insert the new value for {options[option_to_modify-1]}:"))
             
+            #Bucle infinito hasta que se ingrese un int
+            while True:
+                try:
+                    ans = int(input(f"insert the new value for {options[option_to_modify-1]}:"))
+                    break
+                except ValueError:
+                    clear_terminal()
+                    print("Please enter only a valid number")
+
             if option_to_modify == 1:
                 config["POMODORE_TIME"] = ans
             elif option_to_modify == 2:
