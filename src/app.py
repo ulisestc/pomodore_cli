@@ -88,8 +88,39 @@ def main():
 
     pause_program()
 
-    
+    print("Press any key to start Pomodore Session")
+    pause_program()
 
+    # EMPIEZA LO BUENO 
+    pomodores_left = config["NUMBER_OF_ROUNDS"]
+    working_left = config["POMODORE_TIME"] * 60
+    short_rest_left = config["SHORT_REST_TIME"] * 60
+    long_rest_left = config["LONG_REST_TIME"] * 60
+    i = 0
+
+    while pomodores_left > 0:
+        print(f"Starting pomodore no. {i}, pomodores left: {pomodores_left}")
+        
+        # ONE ROUND OF WORRK
+        while working_left != 0:
+            time.sleep(1)
+            print(f"{working_left} seconds left")
+            working_left -= 1
+        if working_left  == 0:
+            working_left = config["POMODORE_TIME"]
+
+        # ONE SHORT REST
+        while short_rest_left != 0:
+            time.sleep(1)
+            print(f"{short_rest_left} seconds left")
+            short_rest_left -= 1
+        if short_rest_left  == 0:
+            short_rest_left = config["SHORT_REST_TIME"]
+
+        i+=1
+        pomodores_left -=1
+
+        
 if __name__ == '__main__':
     main()
 
