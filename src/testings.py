@@ -1,3 +1,6 @@
 import os
+import readchar
 
-print (os.name)
+print("leyendo")
+readchar.readkey()
+# print (os.name)

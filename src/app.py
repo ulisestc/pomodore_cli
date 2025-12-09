@@ -1,7 +1,13 @@
 import time, os
+import readchar
 
 def clear_terminal():
     os.system('cls' if os.name == 'nt' else 'clear')
+
+def pause_program():
+    print("Press any key to continue...")
+    readchar.readkey()
+    clear_terminal()
 
 def main():
 
@@ -39,7 +45,7 @@ def main():
                                                 2. Short rest ({config["SHORT_REST_TIME"]} mins)
                                                 3. Long Rest ({config["LONG_REST_TIME"]} mins)
                                                 4. Number of rounds ({config["NUMBER_OF_ROUNDS"]})
-                                                5. Exit
+                                                5. Continue
                                             """))
                     break
                 except ValueError:
@@ -80,6 +86,10 @@ def main():
         nuber of ROUNDS: {config["NUMBER_OF_ROUNDS"]}
     """)
 
+    pause_program()
+
+    
+
 if __name__ == '__main__':
     main()
 
@@ -87,6 +97,7 @@ if __name__ == '__main__':
 # SOURCES:
 #  ESTE PROYECTO TIENE COMO PRINCIPAL OBJETIVO EL AFIANZAR MIS CONOCIMIENTOS Y LÓGICA DE PROGRAMACIÓN MEDIANTE
 #  LA INVESTIGACIÓN PROPIA DE MANERA PRAGMÁTICA, PARA MEDIR CUANTITATIVAMENTE ANOTARÉ TODA FUENTE DE CONSULTA 
+
 #     26/11/2025
 #     https://www.programiz.com/python-programming/main-function
 #     https://www.geeksforgeeks.org/python/python-or-operator/ 
@@ -97,3 +108,7 @@ if __name__ == '__main__':
 #     https://stackoverflow.com/questions/74412503/cannot-access-local-variable-a-where-it-is-not-associated-with-a-value-but
 #     https://search.brave.com/search?q=python+input+to+int&summary=1&conversation=b1457da7883e657cf43a76
 
+#     08/12/2025
+#     https://www.geeksforgeeks.org/python/make-python-wait-for-a-pressed-key/
+#     https://stackoverflow.com/questions/11552320/correct-way-to-pause-a-python-program/56819619#56819619
+#     https://stackoverflow.com/questions/29780053/how-do-i-print-in-the-middle-of-the-screen
