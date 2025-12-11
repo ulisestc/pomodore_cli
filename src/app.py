@@ -9,6 +9,15 @@ def pause_program():
     readchar.readkey()
     clear_terminal()
 
+def run_timer(timer, message):
+    for i in range(timer): 
+        clear_terminal()
+        print(message)
+        print(f"Time left: {timer} seconds.")
+        time.sleep(1)
+        timer-=1
+
+
 def main():
 
     config = {
@@ -92,35 +101,25 @@ def main():
     pause_program()
 
     # EMPIEZA LO BUENO 
-    pomodores_left = config["NUMBER_OF_ROUNDS"]
-    working_left = config["POMODORE_TIME"] * 60
-    short_rest_left = config["SHORT_REST_TIME"] * 60
-    long_rest_left = config["LONG_REST_TIME"] * 60
-    i = 0
 
-    while pomodores_left > 0:
-        print(f"Starting pomodore no. {i}, pomodores left: {pomodores_left}")
-        
-        # ONE ROUND OF WORRK
-        while working_left != 0:
-            time.sleep(1)
-            print(f"{working_left} seconds left")
-            working_left -= 1
-        if working_left  == 0:
-            working_left = config["POMODORE_TIME"]
+    for i in range(config["NUMBER_OF_ROUNDS"]):
 
-        # ONE SHORT REST
-        while short_rest_left != 0:
-            time.sleep(1)
-            print(f"{short_rest_left} seconds left")
-            short_rest_left -= 1
-        if short_rest_left  == 0:
-            short_rest_left = config["SHORT_REST_TIME"]
+        clear_terminal()
+        print(f"Starting Pomodore no. {i+1}")
+        time.sleep(3)
 
-        i+=1
-        pomodores_left -=1
+        run_timer(config["POMODORE_TIME"]*60, f"Pomodore no. {i+1}")
 
-        
+        if (i+1) == config["NUMBER_OF_ROUNDS"]:
+            run_timer(config["LONG_REST_TIME"]*60, f"Long rest") #PARA LONG REST
+        else:
+            run_timer(config["SHORT_REST_TIME"]*60, f"Short rest no. {i+1}")
+
+#   Se termina la sesión
+    clear_terminal()
+    print("Pomodore session finished")
+    pause_program()
+
 if __name__ == '__main__':
     main()
 
@@ -143,3 +142,6 @@ if __name__ == '__main__':
 #     https://www.geeksforgeeks.org/python/make-python-wait-for-a-pressed-key/
 #     https://stackoverflow.com/questions/11552320/correct-way-to-pause-a-python-program/56819619#56819619
 #     https://stackoverflow.com/questions/29780053/how-do-i-print-in-the-middle-of-the-screen
+
+#     10/12/2025
+#     https://www.w3schools.com/python/python_for_loops.asp
