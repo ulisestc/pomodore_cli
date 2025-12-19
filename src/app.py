@@ -17,7 +17,6 @@ def run_timer(timer, message):
         time.sleep(1)
         timer-=1
 
-
 def main():
 
     config = {
@@ -104,9 +103,10 @@ def main():
 
     for i in range(config["NUMBER_OF_ROUNDS"]):
 
-        clear_terminal()
-        print(f"Starting Pomodore no. {i+1}")
-        time.sleep(3)
+        for j in range(5):
+            clear_terminal()
+            print(f"Starting Pomodore no. {i+1} in {5-j}")
+            time.sleep(1)
 
         run_timer(config["POMODORE_TIME"]*60, f"Pomodore no. {i+1}")
 
