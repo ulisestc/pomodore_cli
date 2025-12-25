@@ -4,6 +4,11 @@ import shutil
 
 columns = shutil.get_terminal_size().columns
 
+def print_centered(text):
+    separated_lines = text.splitlines()
+    for line in separated_lines:
+        print(line.center(columns))
+
 def clear_terminal():
     os.system('cls' if os.name == 'nt' else 'clear')
 
@@ -21,6 +26,18 @@ def run_timer(timer, message):
         timer-=1
 
 def main():
+
+    ascii = r'''
+    ______   ____   _____   ____   __| _/___________   ____  
+    \____ \ /  _ \ /     \ /  _ \ / __ |/  _ \_  __ \_/ __ \ 
+    |  |_> >  <_> )  Y Y  (  <_> ) /_/ (  <_> )  | \/\  ___/ 
+    |   __/ \____/|__|_|  /\____/\____ |\____/|__|    \___  >
+    |__|                                                     
+    '''
+
+    clear_terminal()
+    print_centered(ascii)
+    time.sleep(2)
 
     config = {
         "POMODORE_TIME" : 25,
