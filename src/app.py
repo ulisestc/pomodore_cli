@@ -1,5 +1,8 @@
 import time, os
 import readchar
+import shutil
+
+columns = shutil.get_terminal_size().columns
 
 def clear_terminal():
     os.system('cls' if os.name == 'nt' else 'clear')
