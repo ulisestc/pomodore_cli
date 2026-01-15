@@ -13,15 +13,15 @@ def clear_terminal():
     os.system('cls' if os.name == 'nt' else 'clear')
 
 def pause_program():
-    print("Press any key to continue...")
+    print_centered("Press any key to continue...")
     readchar.readkey()
     clear_terminal()
 
 def run_timer(timer, message):
     for i in range(timer): 
         clear_terminal()
-        print(message)
-        print(f"Time left: {timer} seconds.")
+        print_centered(message)
+        print_centered(f"Time left: {timer} seconds.")
         time.sleep(1)
         timer-=1
 
@@ -49,10 +49,13 @@ def main():
     clear_terminal()
 
     is_default = "Y"
-    is_default = input("""
-                        Welcome to pomodore CLI, do you want to use default settings?
-                        (Y/n)
-                        """)
+
+    print_centered("""
+Welcome to pomodore CLI, do you want to use default settings?
+(Y/n)
+    """)
+
+    is_default = input().lower()
     
     if is_default == "": is_default = "Y" # si no se elige nada => Y, como si fuera linux
     clear_terminal()
@@ -66,22 +69,30 @@ def main():
         while True:
             #bucle infinito hasta que se ingrese un int
             while True:
+                clear_terminal()
                 try:
-                    option_to_modify = int(input(f"""
-                                                What timer do you want to modify?
-                                                1. Focus time ({config["POMODORE_TIME"]} mins)
-                                                2. Short rest ({config["SHORT_REST_TIME"]} mins)
-                                                3. Long Rest ({config["LONG_REST_TIME"]} mins)
-                                                4. Number of rounds ({config["NUMBER_OF_ROUNDS"]})
-                                                5. Continue
-                                            """))
-                    break
+                    print_centered(f"""
+What timer do you want to modify?
+1. Focus time ({config["POMODORE_TIME"]} mins)
+2. Short rest ({config["SHORT_REST_TIME"]} mins)
+3. Long Rest ({config["LONG_REST_TIME"]} mins)
+4. Number of rounds ({config["NUMBER_OF_ROUNDS"]})
+5. Continue
+                    """)
+
+                    option_to_modify = int(input())
+
+                    if(option_to_modify <= 5 and option_to_modify >= 1):
+                        break
+                    else:
+                        clear_terminal()
+                        print_centered("Please enter only a valid number between 1 and 5")
+                        pause_program()
+
                 except ValueError:
                     clear_terminal()
-                    print("Please enter only a valid number")
-            
-            if option_to_modify > 5 or option_to_modify < 1:
-                clear_terminal()
+                    print_centered("Please enter only a valid number")
+                    pause_program()
         
             if option_to_modify == 5:
                 # exit = True
@@ -90,11 +101,14 @@ def main():
             #Bucle infinito hasta que se ingrese un int
             while True:
                 try:
-                    ans = int(input(f"insert the new value for {options[option_to_modify-1]}:"))
+                    clear_terminal()
+                    print_centered(f"insert the new value for {options[option_to_modify-1]}:")
+                    ans = int(input())
                     break
                 except ValueError:
                     clear_terminal()
-                    print("Please enter only a valid number")
+                    print_centered("Please enter only a valid number")
+                    pause_program()
 
             if option_to_modify == 1:
                 config["POMODORE_TIME"] = ans
@@ -106,26 +120,28 @@ def main():
                 config["NUMBER_OF_ROUNDS"] = ans
 
             clear_terminal()
-            
-    print(f"""Using values:
-        FOCUS time: {config["POMODORE_TIME"]} mins
-        REST time: {config["SHORT_REST_TIME"]} mins
-        LONG_REST time: {config["LONG_REST_TIME"]} mins
-        nuber of ROUNDS: {config["NUMBER_OF_ROUNDS"]}
-    """)
+
+    clear_terminal()
+    print_centered(f"""
+Using values:
+FOCUS time: {config["POMODORE_TIME"]} mins
+REST time: {config["SHORT_REST_TIME"]} mins
+LONG_REST time: {config["LONG_REST_TIME"]} mins
+nuber of ROUNDS: {config["NUMBER_OF_ROUNDS"]}
+    
+
+""")
 
     pause_program()
 
-    print("Press any key to start Pomodore Session")
-    pause_program()
-
-    # EMPIEZA LO BUENO 
+    # EMPIEZA LO BUENO --------------------------------------------------------------
 
     for i in range(config["NUMBER_OF_ROUNDS"]):
 
+        # cuenta regresiva de cinco segundos
         for j in range(5):
             clear_terminal()
-            print(f"Starting Pomodore no. {i+1} in {5-j}")
+            print_centered(f"Starting Pomodore no. {i+1} in {5-j}")
             time.sleep(1)
 
         run_timer(config["POMODORE_TIME"]*60, f"Pomodore no. {i+1}")
@@ -137,7 +153,7 @@ def main():
 
 #   Se termina la sesión
     clear_terminal()
-    print("Pomodore session finished")
+    print_centered("Pomodore session finished")
     pause_program()
 
 if __name__ == '__main__':
@@ -165,3 +181,10 @@ if __name__ == '__main__':
 
 #     10/12/2025
 #     https://www.w3schools.com/python/python_for_loops.asp
+
+#     24/12/2025
+#     https://stackoverflow.com/questions/50281190/center-multi-line-text-in-python-output
+#     https://stackoverflow.com/questions/50281190/center-multi-line-text-in-python-output
+
+#     02/01/2026
+#     https://www.snaplogic.com/blog/json-vs-yaml-whats-the-difference-and-which-one-is-right-for-your-enterprise
