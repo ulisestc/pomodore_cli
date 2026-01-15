@@ -38,15 +38,32 @@
 
 
 # TEST PRINT CENTERED INPUT
-import shutil
+# import shutil
 
-columns = shutil.get_terminal_size().columns
+# columns = shutil.get_terminal_size().columns
 
-def print_center_text(text):
-    separated_lines = text.splitlines()
-    for line in separated_lines:
-        print(line.center(columns))
+# def print_center_text(text):
+#     separated_lines = text.splitlines()
+#     for line in separated_lines:
+#         print(line.center(columns))
 
-print_center_text( "Ingrese su nombre: " )
-name = input()
-print_center_text( f"Hola, {name}!" )
+# print_center_text( "Ingrese su nombre: " )
+# name = input()
+# print_center_text( f"Hola, {name}!" )
+
+# TEXT YAML
+# import yaml
+
+# with open("src/config.yaml", "r") as file:
+#     config = yaml.safe_load(file)
+
+#     print(config)
+
+# configuration = """
+    
+# """
+
+# TESTS DE MODULARIZACIÖN
+from handle_config import config_handler
+
+p1 = config_handler()

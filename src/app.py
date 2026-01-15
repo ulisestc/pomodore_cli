@@ -188,3 +188,7 @@ if __name__ == '__main__':
 
 #     02/01/2026
 #     https://www.snaplogic.com/blog/json-vs-yaml-whats-the-difference-and-which-one-is-right-for-your-enterprise
+
+#     15/01/2026
+#     https://python.land/data-processing/python-yaml
+#     https://stackoverflow.com/questions/3430372/how-do-i-get-the-full-path-of-the-current-files-directory
