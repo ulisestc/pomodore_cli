@@ -192,3 +192,9 @@ if __name__ == '__main__':
 #     15/01/2026
 #     https://python.land/data-processing/python-yaml
 #     https://stackoverflow.com/questions/3430372/how-do-i-get-the-full-path-of-the-current-files-directory
+
+
+# APRENDIZAJES: 
+# Principio DRY (Dont Repeat Yourself)
+# Graceful Degradation
+# Desacoplamiento y Responsabilidad Única (SRP)
