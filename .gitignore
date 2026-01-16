@@ -1,3 +1,7 @@
+src/config.yaml
+
+
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
@@ -147,6 +151,9 @@ src\tempCodeRunnerFile.py
 
 # mkdocs documentation
 /site
+
+src/config.yaml
+src/config.yaml
 
 # mypy
 .mypy_cache/
