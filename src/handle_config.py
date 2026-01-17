@@ -5,8 +5,6 @@ import pathlib
 #self.config_path -> path del archivo de configuración yaml
 #self.data -> datos cargados del archivo de configuración
 
-##TODO -> Esta clase no debería tener prints, solo para debuggear
-
 class config_handler:
     
     def __init__(self):
@@ -15,50 +13,80 @@ class config_handler:
         #path de configuración yaml
         self.config_path = self.src_path / "config.yaml"
 
-        #Si hay config, se guarda en self.data
-        if self.config_path.exists():
-            with open(self.config_path, 'r') as file:
-                self.data = yaml.safe_load(file)
-            print("HAY CONFIG:", self.data, sep = "\n")
-        else: # SI NO, se crea el default
-            # cargar configuración
+        if not self.load_config():
             self.set_default_config()
             print("NO HAY CONFIG; SE CREÓ ARCHIVO DE CONFIGURACIÓN DEFAULT:", self.data, sep = "\n")
+        else:
+            print("Config cargada correctamente")
+
+
+    @staticmethod
+    def is_config_valid(config_data):
+        if isinstance(config_data,dict):
+            
+            try:
+                #valida si hay user y configuration
+                username = config_data["user"]["username"]
+                pomodore_time = config_data["configuration"]["pomodore_time"]
+                short_rest_time = config_data["configuration"]["short_rest_time"]
+                long_rest_time = config_data["configuration"]["long_rest_time"]
+                number_of_rounds = config_data["configuration"]["number_of_rounds"]
+            except(KeyError, TypeError): #Si falta valor o no es diccionario valido
+                return False
+            # checamos cada instancia (tipo)
+            if isinstance(username, str) and isinstance(pomodore_time, int) and isinstance(short_rest_time, int) and isinstance(long_rest_time, int) and isinstance(number_of_rounds, int):
+                # checamos >= 0
+                if pomodore_time >= 1 and short_rest_time >= 1 and long_rest_time >= 1 and number_of_rounds >= 1:
+                    return True
+        else:
+            return False
 
     def load_config(self):
-        pass
+        try:
+            with open(self.config_path, 'r') as file:
+                self.data = yaml.safe_load(file)
+            return True
+        except Exception as e:
+            print("ERROR AL CARGAR LA CONFIGURACIÓN:", e, "RESTABLECIENDO VALORES POR DEFECTO. . .")
+            return False
 
     def save_config(self, new_data):
-        pass
+        if not self.is_config_valid(new_data):
+            self.set_default_config()
+            print("Formato de nueva configuración incorrecto, regresando a valores predeterminados")
+            return False
+        else:
+            try:
+                self.data = new_data
+                with open(self.config_path, 'w') as file:
+                    yaml.dump(self.data, file)
+                return True
+            except Exception as e:
+                print("ERROR AL GUARDAR LA CONFIGURACIÖN: ", e ,"REGRESANDO A VALORES DE FABRICA. . .")
+                return False
 
     @staticmethod
     def get_default_config():
-        return """
-                user:
-                    username: default_user
-
-                configuration:
-                    pomodore_time: 25
-                    short_rest_time: 5
-                    long_rest_time: 15
-                    number_of_rounds: 4
-            """
+        return {
+            'user': {
+                'username': 'default_user'
+            },
+            'configuration':{
+                'pomodore_time': 25,
+                'short_rest_time': 5,
+                'long_rest_time': 15,
+                'number_of_rounds': 4
+            }
+        }
 
     def set_default_config(self):
-        self.data = yaml.safe_load(self.get_default_config())
-
+        # self.data = yaml.safe_load(self.get_default_config())
         try:
-            with open(self.config_path, 'w') as file:
-                yaml.dump(self.data, file)
+            self.save_config(self.get_default_config())
             return True
         except Exception as e:
-            print("Error al resetear valores de configuración:", e)
+            print("ERROR AL RESTABLECER LA CONFIGURACIÓN POR DEFECTO:", e)
             return False
 
 if __name__ == "__main__":
     print("ERROR: THIS FILE MUST NOT BE EXECUTED AS MAIN FILE")
-
-
-# TODO: 
-#     load_config debe cargar el yaml a self.data para manejar errores y simplificar constructor
-#     implementar save_config para que set_default_config la use y se simplifique la función

@@ -78,6 +78,22 @@
 # print(open('names.yaml').read())
 
 # TESTS DE MODULARIZACIÖN
-# from handle_config import config_handler
+from handle_config import config_handler
 
-# p1 = config_handler()
+p1 = config_handler()
+print(p1.data)
+
+dict_invalido = {
+    'user': {
+        'username': 'otro_usuario'
+    },
+    'configuration':{
+        'pomodore_time': 'veinte',
+        'short_rest_time': 5,
+        'long_rest_time': 15,
+        'number_of_rounds': 4
+    }
+}
+
+p1.save_config(dict_invalido)
+print(p1.data)
