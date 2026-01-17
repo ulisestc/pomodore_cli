@@ -15,7 +15,7 @@ class config_handler:
 
         if not self.load_config():
             self.set_default_config()
-            print("NO HAY CONFIG; SE CREÓ ARCHIVO DE CONFIGURACIÓN DEFAULT:", self.data, sep = "\n")
+            print("NO HAY CONFIG o ESTA CORRUPTO; SE CREÓ ARCHIVO DE CONFIGURACIÓN DEFAULT:", self.data, sep = "\n")
         else:
             print("Config cargada correctamente")
 
@@ -45,7 +45,12 @@ class config_handler:
         try:
             with open(self.config_path, 'r') as file:
                 self.data = yaml.safe_load(file)
-            return True
+            
+            if self.is_config_valid(self.data):
+                return True
+            else:
+                print("archivo existente pero formato incorrecto")
+                return False
         except Exception as e:
             print("ERROR AL CARGAR LA CONFIGURACIÓN:", e, "RESTABLECIENDO VALORES POR DEFECTO. . .")
             return False

@@ -164,6 +164,8 @@ if __name__ == '__main__':
 #  ESTE PROYECTO TIENE COMO PRINCIPAL OBJETIVO EL AFIANZAR MIS CONOCIMIENTOS Y LÓGICA DE PROGRAMACIÓN MEDIANTE
 #  LA INVESTIGACIÓN PROPIA DE MANERA PRAGMÁTICA, PARA MEDIR CUANTITATIVAMENTE ANOTARÉ TODA FUENTE DE CONSULTA 
 
+#  MENCIÓN HONORIFICA: GOOGLE GEMINI COMO TUTOR (NO VIBECODE!!! 🤓)
+
 #     26/11/2025
 #     https://www.programiz.com/python-programming/main-function
 #     https://www.geeksforgeeks.org/python/python-or-operator/ 
@@ -192,6 +194,10 @@ if __name__ == '__main__':
 #     15/01/2026
 #     https://python.land/data-processing/python-yaml
 #     https://stackoverflow.com/questions/3430372/how-do-i-get-the-full-path-of-the-current-files-directory
+
+#     17/01/2026
+#     https://www.w3schools.com/python/gloss_python_check_if_dictionary_item_exists.asp
+
 
 
 # APRENDIZAJES: 

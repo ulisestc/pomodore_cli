@@ -81,7 +81,7 @@
 from handle_config import config_handler
 
 p1 = config_handler()
-print(p1.data)
+# print(p1.data)
 
 dict_invalido = {
     'user': {
@@ -95,5 +95,5 @@ dict_invalido = {
     }
 }
 
-p1.save_config(dict_invalido)
-print(p1.data)
+# p1.save_config(dict_invalido)
+# print(p1.data)
