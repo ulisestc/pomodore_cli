@@ -1,6 +1,9 @@
 import time, os
 import readchar
 import shutil
+import math
+
+from handle_config import config_handler
 
 columns = shutil.get_terminal_size().columns
 
@@ -39,21 +42,23 @@ def main():
     print_centered(ascii)
     time.sleep(2)
 
-    config = {
-        "POMODORE_TIME" : 25,
-        "SHORT_REST_TIME" : 5,
-        "LONG_REST_TIME" : 15,
-        "NUMBER_OF_ROUNDS" : 4
-    }
+    # instanciar handler de configuración
+    configuration = config_handler()
     
     clear_terminal()
 
     is_default = "Y"
 
-    print_centered("""
-Welcome to pomodore CLI, do you want to use default settings?
-(Y/n)
-    """)
+#     print_centered("""
+# Welcome to pomodore CLI, do you want to use default settings?
+# (Y/n)
+#     """)
+    print_centered("Welcome to pomodore CLI, do you want to use the following settings? (Y/n)")
+    print()
+    for key, value in configuration.data["user"].items():
+        print_centered(f"{key}:{value}")
+    for key, value in configuration.data["configuration"].items():
+        print_centered(f"{key}:{value}")
 
     is_default = input().lower()
     
@@ -64,7 +69,7 @@ Welcome to pomodore CLI, do you want to use default settings?
 
     if is_default == "n":
 
-        options = ["Focus time", "Short rest time", "Long rest time", "Number of rounds"]
+        options = ["Focus time", "Short rest time", "Long rest time", "Number of rounds", "Username"]
         
         while True:
             #bucle infinito hasta que se ingrese un int
@@ -72,21 +77,23 @@ Welcome to pomodore CLI, do you want to use default settings?
                 clear_terminal()
                 try:
                     print_centered(f"""
-What timer do you want to modify?
-1. Focus time ({config["POMODORE_TIME"]} mins)
-2. Short rest ({config["SHORT_REST_TIME"]} mins)
-3. Long Rest ({config["LONG_REST_TIME"]} mins)
-4. Number of rounds ({config["NUMBER_OF_ROUNDS"]})
-5. Continue
+What configuration do you want to modify?
+1. Focus time ({configuration.data["configuration"]["pomodore_time"]} mins)
+2. Short rest ({configuration.data["configuration"]["short_rest_time"]} mins)
+3. Long Rest ({configuration.data["configuration"]["long_rest_time"]} mins)
+4. Number of rounds ({configuration.data["configuration"]["number_of_rounds"]})
+5. Username: ({configuration.data["user"]["username"]})
+6. Reset to Defaults
+7. Continue
                     """)
 
                     option_to_modify = int(input())
 
-                    if(option_to_modify <= 5 and option_to_modify >= 1):
+                    if(option_to_modify <= 7 and option_to_modify >= 1):
                         break
                     else:
                         clear_terminal()
-                        print_centered("Please enter only a valid number between 1 and 5")
+                        print_centered("Please enter only a valid number between 1 and 7")
                         pause_program()
 
                 except ValueError:
@@ -94,8 +101,12 @@ What timer do you want to modify?
                     print_centered("Please enter only a valid number")
                     pause_program()
         
-            if option_to_modify == 5:
+            if option_to_modify == 7:
                 # exit = True
+                break
+
+            if option_to_modify == 6:
+                configuration.set_default_config()
                 break
             
             #Bucle infinito hasta que se ingrese un int
@@ -103,40 +114,48 @@ What timer do you want to modify?
                 try:
                     clear_terminal()
                     print_centered(f"insert the new value for {options[option_to_modify-1]}:")
-                    ans = int(input())
-                    break
+                    if option_to_modify == 5:
+                        ans = str(input())
+                        break
+                    else:
+                        ans = int(math.fabs(int(input())))
+                        break
                 except ValueError:
                     clear_terminal()
                     print_centered("Please enter only a valid number")
                     pause_program()
 
             if option_to_modify == 1:
-                config["POMODORE_TIME"] = ans
+                configuration.data["configuration"]["pomodore_time"] = ans
             elif option_to_modify == 2:
-                config["SHORT_REST_TIME"] = ans
+                configuration.data["configuration"]["short_rest_time"] = ans
             elif option_to_modify == 3:
-                config["LONG_REST_TIME"] = ans
+                configuration.data["configuration"]["long_rest_time"] = ans
             elif option_to_modify == 4:
-                config["NUMBER_OF_ROUNDS"] = ans
+                configuration.data["configuration"]["number_of_rounds"] = ans
+            elif option_to_modify == 5:
+                configuration.data["user"]["username"] = ans
 
             clear_terminal()
 
     clear_terminal()
+
+    configuration.save_config(configuration.data)
+
     print_centered(f"""
 Using values:
-FOCUS time: {config["POMODORE_TIME"]} mins
-REST time: {config["SHORT_REST_TIME"]} mins
-LONG_REST time: {config["LONG_REST_TIME"]} mins
-nuber of ROUNDS: {config["NUMBER_OF_ROUNDS"]}
-    
-
+1. Focus time ({configuration.data["configuration"]["pomodore_time"]} mins)
+2. Short rest ({configuration.data["configuration"]["short_rest_time"]} mins)
+3. Long Rest ({configuration.data["configuration"]["long_rest_time"]} mins)
+4. Number of rounds ({configuration.data["configuration"]["number_of_rounds"]})
+5. Username: ({configuration.data["user"]["username"]})
 """)
 
     pause_program()
 
     # EMPIEZA LO BUENO --------------------------------------------------------------
 
-    for i in range(config["NUMBER_OF_ROUNDS"]):
+    for i in range(configuration.data["configuration"]["number_of_rounds"]):
 
         # cuenta regresiva de cinco segundos
         for j in range(5):
@@ -144,12 +163,12 @@ nuber of ROUNDS: {config["NUMBER_OF_ROUNDS"]}
             print_centered(f"Starting Pomodore no. {i+1} in {5-j}")
             time.sleep(1)
 
-        run_timer(config["POMODORE_TIME"]*60, f"Pomodore no. {i+1}")
+        run_timer(configuration.data["configuration"]["pomodore_time"]*60, f"Pomodore no. {i+1}")
 
-        if (i+1) == config["NUMBER_OF_ROUNDS"]:
-            run_timer(config["LONG_REST_TIME"]*60, f"Long rest") #PARA LONG REST
+        if (i+1) == configuration.data["configuration"]["number_of_rounds"]:
+            run_timer(configuration.data["configuration"]["long_rest_time"]*60, f"Long rest") #PARA LONG REST
         else:
-            run_timer(config["SHORT_REST_TIME"]*60, f"Short rest no. {i+1}")
+            run_timer(configuration.data["configuration"]["short_rest_time"]*60, f"Short rest no. {i+1}")
 
 #   Se termina la sesión
     clear_terminal()
@@ -197,6 +216,9 @@ if __name__ == '__main__':
 
 #     17/01/2026
 #     https://www.w3schools.com/python/gloss_python_check_if_dictionary_item_exists.asp
+#     https://www.geeksforgeeks.org/python/how-to-print-a-dictionary-in-python/
+#     https://docs.python.org/3/library/math.html#math.fabs
+    
 
 
 
