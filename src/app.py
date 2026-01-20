@@ -21,12 +21,15 @@ def pause_program():
     clear_terminal()
 
 def run_timer(timer, message):
-    for i in range(timer): 
+    start_time = time.time()
+    end_time = start_time + timer
+
+    while time.time() < end_time: 
+        remaining_time = math.ceil(end_time - time.time())
         clear_terminal()
         print_centered(message)
-        print_centered(f"Time left: {timer} seconds.")
-        time.sleep(1)
-        timer-=1
+        print_centered(f"Time left: {remaining_time} seconds.")
+        time.sleep(.1)
 
 def main():
 
@@ -213,14 +216,15 @@ if __name__ == '__main__':
 #     15/01/2026
 #     https://python.land/data-processing/python-yaml
 #     https://stackoverflow.com/questions/3430372/how-do-i-get-the-full-path-of-the-current-files-directory
+#     https://www.w3schools.com/python/python_class_init.asp
 
 #     17/01/2026
 #     https://www.w3schools.com/python/gloss_python_check_if_dictionary_item_exists.asp
 #     https://www.geeksforgeeks.org/python/how-to-print-a-dictionary-in-python/
 #     https://docs.python.org/3/library/math.html#math.fabs
-    
 
-
+#     20/01/2026
+#     https://stackoverflow.com/questions/5890304/timer-for-python-game
 
 # APRENDIZAJES: 
 # Principio DRY (Dont Repeat Yourself)
