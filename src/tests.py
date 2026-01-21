@@ -122,6 +122,9 @@ engine = pomodore_engine(p1.data)
 print(engine.config)
 
 print("TEST DE POM ENGINE")
-while True:
-    print(engine.get_info())
-    pause_program()
+# while True:
+#     print(engine.get_info())
+#     pause_program()
+def printer(m):
+    print(m)
+engine.run_timer(10,printer)

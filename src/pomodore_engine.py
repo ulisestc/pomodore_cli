@@ -4,8 +4,8 @@
 # is_break = si toca descanso
 # max_rounds = a las cuantas rondas es el long rest
 
-# P . s . P . s . P . s . P . l 
-
+import time
+import math
 
 class pomodore_engine:
     def __init__(self, config):
@@ -36,5 +36,16 @@ class pomodore_engine:
 
         return duration, message    
 
-    def run_next_session(self, duration):
+    def run_timer(self, duration, callback_func):
+        #get_info se encargará de la lógica por lo que esta func. solo se encarga de la lógica del tiempo
         self.is_running = True
+        start_time = time.time()
+        end_time = start_time + duration
+
+        while time.time() < end_time: 
+            remaining_time = math.ceil(end_time - time.time())
+            minutes = remaining_time // 60
+            seconds = remaining_time % 60
+            
+            callback_func(f"{minutes}:{seconds}")
+            time.sleep(.5)
