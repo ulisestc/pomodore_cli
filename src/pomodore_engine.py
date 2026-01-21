@@ -14,18 +14,19 @@ class pomodore_engine:
         self.is_running = False
         self.is_break = False
         self.max_rounds = config["configuration"]["number_of_rounds"]
+        self.message = ""
 
     def get_info(self):
         #Si no toca descanso asignamos duración y mensaje a el pomodoro respectivo
         if not self.is_break: 
             duration = self.config["configuration"]["pomodore_time"]*60
-            message = f"Pomodore no. {self.current_round}"
+            self.message = f"Pomodore no. {self.current_round}"
         elif self.is_break and self.current_round < self.max_rounds: #Si toca descanso y todavía no llegamos a max_rounds, toca short rest
             duration = self.config["configuration"]["short_rest_time"]*60
-            message = f"Short rest no. {self.current_round}"
+            self.message = f"Short rest no. {self.current_round}"
         else: # Casp contrario is_break = True y current_round == max_rounds => Long rest
             duration = self.config["configuration"]["long_rest_time"]*60
-            message = f"Long rest, prepare for next session"
+            self.message = f"Long rest, prepare for next session"
         
         #Finalizando la decisión de que toca: se invierte valor de is_break y se suma la ronda actual
         # para preparar la siguiente iteración
@@ -34,7 +35,7 @@ class pomodore_engine:
         if self.current_round > self.max_rounds: self.current_round = 1 #Si ya nos pasamos, resetear para que toque el short rest correspondiente
         self.is_break = not self.is_break #invertir polaridad de break
 
-        return duration, message    
+        return duration, self.message    
 
     def run_timer(self, duration, callback_func):
         #get_info se encargará de la lógica por lo que esta func. solo se encarga de la lógica del tiempo
@@ -47,5 +48,5 @@ class pomodore_engine:
             minutes = remaining_time // 60
             seconds = remaining_time % 60
             
-            callback_func(f"{minutes}:{seconds}")
+            callback_func(self.message,f"{minutes}:{seconds}")
             time.sleep(.5)

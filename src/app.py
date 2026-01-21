@@ -4,6 +4,7 @@ import shutil
 import math
 
 from handle_config import config_handler
+from pomodore_engine import pomodore_engine
 
 columns = shutil.get_terminal_size().columns
 
@@ -20,16 +21,11 @@ def pause_program():
     readchar.readkey()
     clear_terminal()
 
-def run_timer(timer, message):
-    start_time = time.time()
-    end_time = start_time + timer
-
-    while time.time() < end_time: 
-        remaining_time = math.ceil(end_time - time.time())
-        clear_terminal()
-        print_centered(message)
-        print_centered(f"Time left: {remaining_time} seconds.")
-        time.sleep(.1)
+def print_timer(message, timer):
+    clear_terminal()
+    print_centered(message)
+    print_centered(timer)
+    print_centered("Press Ctrl + C to Exit.")
 
 def main():
 
@@ -157,26 +153,26 @@ Using values:
     pause_program()
 
     # EMPIEZA LO BUENO --------------------------------------------------------------
-
-    for i in range(configuration.data["configuration"]["number_of_rounds"]):
-
-        # cuenta regresiva de cinco segundos
-        for j in range(5):
-            clear_terminal()
-            print_centered(f"Starting Pomodore no. {i+1} in {5-j}")
-            time.sleep(1)
-
-        run_timer(configuration.data["configuration"]["pomodore_time"]*60, f"Pomodore no. {i+1}")
-
-        if (i+1) == configuration.data["configuration"]["number_of_rounds"]:
-            run_timer(configuration.data["configuration"]["long_rest_time"]*60, f"Long rest") #PARA LONG REST
-        else:
-            run_timer(configuration.data["configuration"]["short_rest_time"]*60, f"Short rest no. {i+1}")
-
-#   Se termina la sesión
-    clear_terminal()
-    print_centered("Pomodore session finished")
     pause_program()
+    #Con config ya seteada, podemos instanciar el engine: 
+    engine = pomodore_engine(configuration.data)
+
+    # cuenta regresiva de cinco segundos
+    try:
+        while True: 
+            duration, message = engine.get_info()
+
+            for j in range(5):
+                clear_terminal()
+                print_centered(f"Starting {message} in {5-j}")
+                time.sleep(1)
+            
+            engine.run_timer(duration, print_timer)
+    except KeyboardInterrupt:
+    #   Se termina la sesión
+        clear_terminal()
+        print_centered("Pomodore session finished")
+        pause_program()
 
 if __name__ == '__main__':
     main()
