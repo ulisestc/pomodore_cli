@@ -11,13 +11,13 @@ class config_handler:
         # path absoluto del src
         self.src_path = pathlib.Path(__file__).parent.resolve()
         #path de configuración yaml
-        self.config_path = self.src_path / "config.yaml"
+        self.config_path = self.src_path / ".config.yaml"
 
         if not self.load_config():
             self.set_default_config()
-            print("NO HAY CONFIG o ESTA CORRUPTO; SE CREÓ ARCHIVO DE CONFIGURACIÓN DEFAULT:", self.data, sep = "\n")
-        else:
-            print("Config cargada correctamente")
+            # print("NO HAY CONFIG o ESTA CORRUPTO; SE CREÓ ARCHIVO DE CONFIGURACIÓN DEFAULT:", self.data, sep = "\n")
+        # else:
+            # print("Config cargada correctamente")
 
 
     @staticmethod
@@ -49,16 +49,16 @@ class config_handler:
             if self.is_config_valid(self.data):
                 return True
             else:
-                print("archivo existente pero formato incorrecto")
+                # print("archivo existente pero formato incorrecto")
                 return False
         except Exception as e:
-            print("ERROR AL CARGAR LA CONFIGURACIÓN:", e, "RESTABLECIENDO VALORES POR DEFECTO. . .")
+            # print("ERROR AL CARGAR LA CONFIGURACIÓN:", e, "RESTABLECIENDO VALORES POR DEFECTO. . .")
             return False
 
     def save_config(self, new_data):
         if not self.is_config_valid(new_data):
             self.set_default_config()
-            print("Formato de nueva configuración incorrecto, regresando a valores predeterminados")
+            # print("Formato de nueva configuración incorrecto, regresando a valores predeterminados")
             return False
         else:
             try:
@@ -67,7 +67,7 @@ class config_handler:
                     yaml.dump(self.data, file)
                 return True
             except Exception as e:
-                print("ERROR AL GUARDAR LA CONFIGURACIÖN: ", e ,"REGRESANDO A VALORES DE FABRICA. . .")
+                # print("ERROR AL GUARDAR LA CONFIGURACIÖN: ", e ,"REGRESANDO A VALORES DE FABRICA. . .")
                 return False
 
     @staticmethod
@@ -90,7 +90,7 @@ class config_handler:
             self.save_config(self.get_default_config())
             return True
         except Exception as e:
-            print("ERROR AL RESTABLECER LA CONFIGURACIÓN POR DEFECTO:", e)
+            # print("ERROR AL RESTABLECER LA CONFIGURACIÓN POR DEFECTO:", e)
             return False
 
 if __name__ == "__main__":
