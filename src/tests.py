@@ -78,10 +78,18 @@
 # print(open('names.yaml').read())
 
 # TESTS DE MODULARIZACIÖN
+
+
 from handle_config import config_handler
+from pomodore_engine import pomodore_engine
+import readchar
+
+def pause_program():
+    print("Press any key to continue...")
+    readchar.readkey()
 
 p1 = config_handler()
-# print(p1.data)
+print(p1.data)
 
 dict_invalido = {
     'user': {
@@ -95,5 +103,25 @@ dict_invalido = {
     }
 }
 
-# p1.save_config(dict_invalido)
-# print(p1.data)
+dict_valido = {
+    'user': {
+        'username': 'otro_usuario'
+    },
+    'configuration':{
+        'pomodore_time': 1,
+        'short_rest_time': 1,
+        'long_rest_time': 1,
+        'number_of_rounds': 2
+    }
+}
+
+print(p1.save_config(dict_invalido))
+print(p1.data)
+
+engine = pomodore_engine(p1.data)
+print(engine.config)
+
+print("TEST DE POM ENGINE")
+while True:
+    print(engine.get_info())
+    pause_program()
