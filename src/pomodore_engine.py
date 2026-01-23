@@ -48,5 +48,5 @@ class pomodore_engine:
             minutes = remaining_time // 60
             seconds = remaining_time % 60
             
-            callback_func(self.message,f"{minutes}:{seconds}")
+            callback_func(self.message,"{:02d}:{:02d}".format(minutes, seconds))
             time.sleep(.5)

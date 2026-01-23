@@ -221,6 +221,11 @@ if __name__ == '__main__':
 
 #     20/01/2026
 #     https://stackoverflow.com/questions/5890304/timer-for-python-game
+#     https://www.askpython.com/python/built-in-methods/callback-functions-in-python
+
+#     23/01/2026
+#     https://www.askpython.com/python/string/02d-in-python
+
 
 # APRENDIZAJES: 
 # Principio DRY (Dont Repeat Yourself)
