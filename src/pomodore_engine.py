@@ -7,7 +7,7 @@
 import time
 import math
 
-class pomodore_engine:
+class PomodoreEngine:
     def __init__(self, config):
         self.config = config
         self.current_round = 1
@@ -16,7 +16,7 @@ class pomodore_engine:
         self.max_rounds = config["configuration"]["number_of_rounds"]
         self.message = ""
 
-    def get_info(self):
+    def prepare_next_session(self):
         #Si no toca descanso asignamos duración y mensaje a el pomodoro respectivo
         if not self.is_break: 
             duration = self.config["configuration"]["pomodore_time"]*60

@@ -3,15 +3,15 @@ import readchar
 import shutil
 import math
 
-from handle_config import config_handler
-from pomodore_engine import pomodore_engine
+from handle_config import ConfigHandler
+from pomodore_engine import PomodoreEngine
 
-columns = shutil.get_terminal_size().columns
+COLUMNS = shutil.get_terminal_size().columns
 
 def print_centered(text):
     separated_lines = text.splitlines()
     for line in separated_lines:
-        print(line.center(columns))
+        print(line.center(COLUMNS))
 
 def clear_terminal():
     os.system('cls' if os.name == 'nt' else 'clear')
@@ -29,7 +29,7 @@ def print_timer(message, timer):
 
 def main():
 
-    ascii = r'''
+    ASCII = r'''
     ______   ____   _____   ____   __| _/___________   ____  
     \____ \ /  _ \ /     \ /  _ \ / __ |/  _ \_  __ \_/ __ \ 
     |  |_> >  <_> )  Y Y  (  <_> ) /_/ (  <_> )  | \/\  ___/ 
@@ -38,11 +38,11 @@ def main():
     '''
 
     clear_terminal()
-    print_centered(ascii)
+    print_centered(ASCII)
     time.sleep(2)
 
     # instanciar handler de configuración
-    configuration = config_handler()
+    configuration = ConfigHandler()
     
     clear_terminal()
 
@@ -155,12 +155,12 @@ Using values:
     # EMPIEZA LO BUENO --------------------------------------------------------------
     pause_program()
     #Con config ya seteada, podemos instanciar el engine: 
-    engine = pomodore_engine(configuration.data)
+    engine = PomodoreEngine(configuration.data)
 
     # cuenta regresiva de cinco segundos
     try:
         while True: 
-            duration, message = engine.get_info()
+            duration, message = engine.prepare_next_session()
 
             for j in range(5):
                 clear_terminal()
@@ -226,6 +226,8 @@ if __name__ == '__main__':
 #     23/01/2026
 #     https://www.askpython.com/python/string/02d-in-python
 
+#     24/01/2026
+#     https://www.youtube.com/watch?v=Uw95Uc3xgWU
 
 # APRENDIZAJES: 
 # Principio DRY (Dont Repeat Yourself)

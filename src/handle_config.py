@@ -5,13 +5,13 @@ import pathlib
 #self.config_path -> path del archivo de configuración yaml
 #self.data -> datos cargados del archivo de configuración
 
-class config_handler:
+class ConfigHandler:
     
     def __init__(self):
         # path absoluto del src
-        self.src_path = pathlib.Path(__file__).parent.resolve()
+        self.SRC_PATH = pathlib.Path(__file__).parent.resolve()
         #path de configuración yaml
-        self.config_path = self.src_path / ".config.yaml"
+        self.CONFIG_PATH = self.SRC_PATH / ".config.yaml"
 
         if not self.load_config():
             self.set_default_config()
@@ -43,7 +43,7 @@ class config_handler:
 
     def load_config(self):
         try:
-            with open(self.config_path, 'r') as file:
+            with open(self.CONFIG_PATH, 'r') as file:
                 self.data = yaml.safe_load(file)
             
             if self.is_config_valid(self.data):
@@ -63,7 +63,7 @@ class config_handler:
         else:
             try:
                 self.data = new_data
-                with open(self.config_path, 'w') as file:
+                with open(self.CONFIG_PATH, 'w') as file:
                     yaml.dump(self.data, file)
                 return True
             except Exception as e:
