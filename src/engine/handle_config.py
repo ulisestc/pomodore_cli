@@ -9,7 +9,7 @@ class ConfigHandler:
     
     def __init__(self):
         # path absoluto del src
-        self.SRC_PATH = pathlib.Path(__file__).parent.resolve()
+        self.SRC_PATH = pathlib.Path(__file__).parent.parent.resolve()
         #path de configuración yaml
         self.CONFIG_PATH = self.SRC_PATH / ".config.yaml"
 

@@ -78,17 +78,22 @@
 # print(open('names.yaml').read())
 
 # TESTS DE MODULARIZACIÖN
+#hacemos esto para poder leer todos los modulos de src, en este caso -> engine
+#si no se hiciera, python solo buscaría en old/ y PYTHONPATH
+import sys, pathlib
+SRC_PATH = pathlib.Path(__file__).parent.parent.resolve()
+sys.path.append(str(SRC_PATH))
 
 
-from handle_config import config_handler
-from pomodore_engine import pomodore_engine
+from engine.handle_config import ConfigHandler
+from engine.pomodore_engine import PomodoreEngine
 import readchar
 
 def pause_program():
     print("Press any key to continue...")
     readchar.readkey()
 
-p1 = config_handler()
+p1 = ConfigHandler()
 print(p1.data)
 
 dict_invalido = {
@@ -118,13 +123,15 @@ dict_valido = {
 print(p1.save_config(dict_invalido))
 print(p1.data)
 
-engine = pomodore_engine(p1.data)
+engine = PomodoreEngine(p1.data)
 print(engine.config)
 
 print("TEST DE POM ENGINE")
 # while True:
 #     print(engine.get_info())
 #     pause_program()
-def printer(m):
+def printer(m,t):
     print(m)
+    print(t)
+
 engine.run_timer(10,printer)
