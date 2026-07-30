@@ -15,6 +15,15 @@ class PomodoreEngine:
         self.is_break = False
         self.max_rounds = config["configuration"]["number_of_rounds"]
         self.message = ""
+        self.remaining_seconds = self.config["configuration"]["pomodore_time"] * 60
+        self.duration = self.config["configuration"]["pomodore_time"] * 60
+        
+    @property
+    def formatted_time(self):
+        return "{:02d}:{:02d}".format((self.remaining_seconds // 60), (self.remaining_seconds % 60))
+    
+    def toggle_pause(self):
+        self.is_running = not self.is_running
 
     def prepare_next_session(self):
         #Si no toca descanso asignamos duración y mensaje a el pomodoro respectivo
@@ -35,8 +44,17 @@ class PomodoreEngine:
         if self.current_round > self.max_rounds: self.current_round = 1 #Si ya nos pasamos, resetear para que toque el short rest correspondiente
         self.is_break = not self.is_break #invertir polaridad de break
 
-        return duration, self.message    
+        return duration, self.message   
 
+    def tick(self):
+        if not self.is_running:
+            return False
+        if self.remaining_seconds > 0:
+            self.remaining_seconds -= 1
+        return self.remaining_seconds <= 0 # When true -> sesion finished
+
+    # obsolete function as it is synchronous
+    # used in old/old_cli.py (keep for legacy purposes)
     def run_timer(self, duration, callback_func):
         #get_info se encargará de la lógica por lo que esta func. solo se encarga de la lógica del tiempo
         self.is_running = True
