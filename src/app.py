@@ -1,33 +1,40 @@
-from textual.app import App
+from textual.app import App, ComposeResult
 from textual.widgets import Header, Footer, Static, Button
 from textual.containers import Container
+from textual.screen import Screen
 
-class MainMenu(Static):
-    def compose(self):
-        yield Static("POMODORE TUI", id="title")
-        yield Button("START SESSION")
-        yield Button("SETTINGS")
+class SettingsScreen(Screen):
+    def compose(self) -> ComposeResult:
+        yield Static("SETTINGS SCREEN")
+
+class TimerScreen(Screen):
+    def compose(self) -> ComposeResult:
+        yield Static("TIMERSCREEN")
+
+class SplashScreen(Screen):
+    ASCII = r'''
+    ______   ____   _____   ____   __| _/___________   ____  
+    \____ \ /  _ \ /     \ /  _ \ / __ |/  _ \_  __ \_/ __ \ 
+    |  |_> >  <_> )  Y Y  (  <_> ) /_/ (  <_> )  | \/\  ___/ 
+    |   __/ \____/|__|_|  /\____/\____ |\____/|__|    \___  >
+    |__|                                                     
+    '''
+
+    def compose (self) -> ComposeResult:
+        yield Static(self.ASCII)
+
+    def on_mount(self):
+        self.set_timer(1.0, self.go_to_timer)
+
+    def go_to_timer(self):
+        self.app.pop_screen()
 
 class PomodoreTUI(App):
     CSS_PATH = "styles.css"
 
-    BINDINGS = [
-        ("s","start_session", "Start Session"),
-        ("t","go_to_settings", "Go to Settings")
-    ]
-
-    def compose(self):
-        yield Header()
-        yield Footer()
-
-        with Container(id ="menu"):
-            yield MainMenu()
-
-    def action_start_session(self):
-        pass
-
-    def action_go_to_settings(self):
-        pass
+    def on_mount(self) -> None:
+        self.push_screen(TimerScreen())
+        self.push_screen(SplashScreen())
 
 if __name__ == "__main__":
     app = PomodoreTUI()
